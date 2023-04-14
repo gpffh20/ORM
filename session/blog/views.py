@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
-from .models import Blog, Comment, Tag
+from .models import Blog, Comment, Tag, Like
 
 
 def home(request):
@@ -81,3 +81,14 @@ def new_comment(request, blog_id):
 
 
 # TODO: like 기능 구현
+def like(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    like = Like.objects.filter(user=request.user, blog=blog)
+    if like.exists():
+        like.delete()
+        blog.like_count -= 1
+    else:
+        Like.objects.create(user=request.user, blog=blog)
+        blog.like_count += 1
+        blog.save()
+    return redirect('detail', blog_id)

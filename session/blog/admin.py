@@ -9,4 +9,5 @@ class BlogAdmin(admin.ModelAdmin):
 admin.site.register(Blog, BlogAdmin)
 admin.site.register(Comment)
 admin.site.register(Tag)
+admin.site.register(Like)
 #TODO: Like 추가하기

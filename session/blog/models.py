@@ -8,6 +8,8 @@ class Blog(models.Model):
     image = models.ImageField(upload_to='blog/', null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     tag = models.ManyToManyField('Tag', blank=True)
+    like = models.ManyToManyField(User, related_name='like',blank=True)
+    like_count = models.PositiveIntegerField(default=0)
 
     class Meta:
         db_table = 'blog'
@@ -42,4 +44,11 @@ class Tag(models.Model):
         return self.name
 
 
+class Like(models.Model):
+    like_blog = models.ForeignKey(Blog, related_name="+", on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, related_name="+", on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        db_table = "like"
+    
 # TODO: Like 모델 추가하기
